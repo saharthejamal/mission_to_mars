@@ -13,10 +13,17 @@ def index():
 
 @app.route("/scrape")
 def scrape():
-    mars = mongo.db.mars 
+    mars = mongo.db.mars
     mars_data = scrape_mars.scrape()
-    mars.update({}, mars_data, upsert=True)
-    return redirect("/")
+    mars.update_one({}, {"$set": mars_data}, upsert=True)
+    return redirect('/', code=302)
+
+# @app.route("/scrape")
+# def scrape():
+#     mars = mongo.db.mars 
+#     mars_data = scrape_mars.scrape()
+#     mars.update({}, mars_data, upsert=True)
+#     return redirect("/")
 
 if __name__ == "__main__":
     app.run(debug=True)
